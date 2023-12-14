@@ -2,7 +2,7 @@ const postgre = require('../database')
 const productController = {
     getAll: async(req, res) => {
         try {
-            const { rows } = await postgre.query("select * from productos")
+            const { rows } = await postgre.query("select * from products")
             res.json({msg: "OK", data: rows})
         } catch (error) {
             res.json({msg: error.msg})
