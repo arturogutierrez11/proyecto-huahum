@@ -1,26 +1,26 @@
 const postgre = require('../database')
-const bookController = {
+const productController = {
     getAll: async(req, res) => {
         try {
-            const { rows } = await postgre.query("select * from books")
+            const { rows } = await postgre.query("select * from productos")
             res.json({msg: "OK", data: rows})
         } catch (error) {
             res.json({msg: error.msg})
         }
     },
-    getById: async(req, res) => {
-        try {
-            const { rows } = await postgre.query("select * from books where book_id = $1", [req.params.id])
+    // getById: async(req, res) => {
+    //     try {
+    //         const { rows } = await postgre.query("select * from books where book_id = $1", [req.params.id])
 
-            if (rows[0]) {
-                return res.json({msg: "OK", data: rows})
-            }
+    //         if (rows[0]) {
+    //             return res.json({msg: "OK", data: rows})
+    //         }
 
-            res.status(404).json({msg: "not found"})
-        } catch (error) {
-            res.json({msg: error.msg})
-        }
-    },
+    //         res.status(404).json({msg: "not found"})
+    //     } catch (error) {
+    //         res.json({msg: error.msg})
+    //     }
+    // },
     create: async(req, res) => {
         try {
             const { name, price } = req.body
@@ -35,37 +35,39 @@ const bookController = {
             res.json({msg: error.msg})
         }
     },
-    updateById: async(req, res) => {
-        try {
-            const { name, price } = req.body
+    // updateById: async(req, res) => {
 
-            const sql = 'UPDATE books set name = $1, price = $2 where book_id = $3 RETURNING *'
+    //     try {
+    //         const { name, price } = req.body
 
-            const { rows } = await postgre.query(sql, [name, price, req.params.id])
+    //         const sql = 'UPDATE books set name = $1, price = $2 where book_id = $3 RETURNING *'
 
-            res.json({msg: "OK", data: rows[0]})
+    //         const { rows } = await postgre.query(sql, [name, price, req.params.id])
 
-        } catch (error) {
-            res.json({msg: error.msg})
-        }
-    },
-    deleteById: async(req, res) => {
-        try {
-            const sql = 'DELETE FROM books where book_id = $1 RETURNING *'
+    //         res.json({msg: "OK", data: rows[0]})
 
-            const { rows } = await postgre.query(sql, [req.params.id])
+    //     } catch (error) {
+    //         res.json({msg: error.msg})
+    //     }
+    // },
 
-            if (rows[0]) {
-                return res.json({msg: "OK", data: rows[0]})
-            }
+    // deleteById: async(req, res) => {
+    //     try {
+    //         const sql = 'DELETE FROM books where book_id = $1 RETURNING *'
 
-            return res.status(404).json({msg: "not found"})
+    //         const { rows } = await postgre.query(sql, [req.params.id])
+
+    //         if (rows[0]) {
+    //             return res.json({msg: "OK", data: rows[0]})
+    //         }
+
+    //         return res.status(404).json({msg: "not found"})
             
 
-        } catch (error) {
-            res.json({msg: error.msg})
-        }
-    }
+    //     } catch (error) {
+    //         res.json({msg: error.msg})
+    //     }
+    //  }
 }
 
 module.exports = bookController
