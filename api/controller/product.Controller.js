@@ -70,4 +70,4 @@ const productController = {
     //  }
 }
 
-module.exports = bookController
+module.exports = productController
