@@ -1,12 +1,21 @@
 const postgre = require('../database')
+const axios = require('axios');
 const productController = {
     getAll: async(req, res) => {
         try {
-            const { rows } = await postgre.query("select * from products")
-            res.json({msg: "OK", data: rows})
-        } catch (error) {
-            res.json({msg: error.msg})
-        }
+            // Consulta en la base de datos PostgreSQL
+            const postgresResult = await postgre.query("SELECT * FROM products");
+            const postgresData = postgresResult.rows;
+          
+            // Llamado a la API de SheetDB
+            const sheetDbResponse = await axios.get('https://sheetdb.io/api/v1/utggcucu4ayvk');
+            const sheetDbData = sheetDbResponse.data;
+          
+            // Respuesta combinada
+            res.json({ msg: 'OK', postgresData, sheetDbData });
+          } catch (error) {
+            res.json({ msg: error.message });
+          }
     },
     // getById: async(req, res) => {
     //     try {
